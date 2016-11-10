@@ -32,11 +32,13 @@ def get_file_list(path):
 	file_list = next(os.walk(path))[2]
 	return list(file_list)
 
+count=0
 #path = "."	#current folder
 path = 'D:\VirtualDir\FunMovie\pictures\\advertisement\\'
 files = get_file_list(path)
 for file in files:
 	full_path = path + file
 	with open(full_path, 'rb') as fileobj:
-		print(full_path)
+		print(('%d. %s') % (count, full_path))
 		bucket.put_object(file, fileobj);
+	count += 1
