@@ -32,7 +32,8 @@ def get_file_list(path):
 	file_list = next(os.walk(path))[2]
 	return list(file_list)
 
-path = "."	#current folder
+#path = "."	#current folder
+path = "D:/VirtualDir/FunMovie/pictures/test"
 files = get_file_list(path)
 for file in files:
 	print(file)
