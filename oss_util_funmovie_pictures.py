@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-import time
+from time import sleep
+from datetime import datetime
 import os
 
 import oss2
@@ -13,6 +14,9 @@ def get_file_list(path):
 for folder in folders:
 	bucket_name_str = 'momatech-image-gallery/FunMovie/pictures/' + folder
 	print(("\r\n>>>>>> %s") % bucket_name_str)
+
+	#start-time
+	start_time = datetime.now()
 
 	# 首先初始化AccessKeyId、AccessKeySecret、Endpoint等信息。
 	# 通过环境变量获取，或者把诸如“<你的AccessKeyId>”替换成真实的AccessKeyId等。
@@ -47,3 +51,12 @@ for folder in folders:
 			except:
 				pass
 	print(count)
+
+	#end-time
+	end_time = datetime.now()
+	#elapsed-time
+	elapsed_time = end_time - start_time
+	
+	print("Start Time\t%s" % start_time)
+	print("End Time\t%s" % end_time)
+	print("Elapsed Time\t%s" % elapsed_time)
