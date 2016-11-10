@@ -37,8 +37,9 @@ count=0
 path = 'D:\VirtualDir\FunMovie\pictures\\advertisement\\'
 files = get_file_list(path)
 for file in files:
-	full_path = path + file
-	with open(full_path, 'rb') as fileobj:
-		print(('%d. %s') % (count, full_path))
-		bucket.put_object(file, fileobj);
-	count += 1
+	if ".py" not in file:
+		full_path = path + file
+		with open(full_path, 'rb') as fileobj:
+			print(('%d. %s') % (count, full_path))
+			#bucket.put_object(file, fileobj);
+		count += 1
