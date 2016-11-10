@@ -5,7 +5,7 @@ import os
 import oss2
 
 bucket_name_str = 'momatech-image-gallery'
-bucket_name_str += '/FunMovie'
+bucket_name_str += '/FunMovie/pictures/advertisement'
 
 # 以下代码展示了Bucket相关操作，诸如创建、删除、列举Bucket等。
 
