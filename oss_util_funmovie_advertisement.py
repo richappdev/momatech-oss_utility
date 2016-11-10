@@ -33,8 +33,10 @@ def get_file_list(path):
 	return list(file_list)
 
 #path = "."	#current folder
-path = "D:/VirtualDir/FunMovie/pictures/test"
+path = 'D:/VirtualDir/FunMovie/pictures/test/'
 files = get_file_list(path)
 for file in files:
-	print(file)
-	bucket.put_object_from_file(file, file);
+	full_path = path + file
+	with open(full_path, 'rb') as fileobj:
+		print(full_path)
+		bucket.put_object_from_file(file, fileobj);
