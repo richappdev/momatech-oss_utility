@@ -41,5 +41,5 @@ for file in files:
 		full_path = path + file
 		with open(full_path, 'rb') as fileobj:
 			print(('%d. %s') % (count, full_path))
-			#bucket.put_object(file, fileobj);
+			bucket.put_object(file, fileobj);
 		count += 1
