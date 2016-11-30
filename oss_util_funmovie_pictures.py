@@ -48,6 +48,7 @@ for folder in folders:
 					print(('%d. %s') % (count, full_path))
 					bucket.put_object(file, fileobj);
 				count += 1
+				fileobj.close()
 			except:
 				pass
 	print(count)
