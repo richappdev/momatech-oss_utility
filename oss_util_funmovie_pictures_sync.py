@@ -50,12 +50,6 @@ bucket_name_prefix = 'momatech-image-gallery/FunMovie/pictures/'
 local_path_prefix = 'D:\VirtualDir\FunMovie\pictures\\'
 folders = ['advertisement','banners','banners_intouch','famous','files','homepicture','posters','topic','videotype']
 
-if len(sys.argv) < 3:
-	print('arg[1]: -list, -sync')
-	print('arg[2]: -detail, -empty')
-	print('Please input with two arguments !\r\nExit.')
-	sys.exit()
-
 for folder in folders:
 	#if folder is not 'advertisement' and folder is not 'homepicture':
 	#	continue
