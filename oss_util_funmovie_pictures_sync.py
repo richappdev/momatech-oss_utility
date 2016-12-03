@@ -116,19 +116,16 @@ for folder in folders:
 			if sys.argv[2] is '-detail':
 				print(('%d. %s') % (list_diff.index(file)+1, path+file), end='', flush=True)
 			
-			try:
-				with open(full_path, 'rb') as fileobj:
-					if sys.argv[1] is '-sync':
+			if sys.argv[1] is '-sync':
+				try:
+					with open(full_path, 'rb') as fileobj:
 						bucket_upload.put_object(file, fileobj);
-					else:
-						pass
-					fileobj.close()
-
+						fileobj.close()
+						if sys.argv[2] is '-detail':
+							print(' ... OK')
+				except e:
 					if sys.argv[2] is '-detail':
-						print(' ... OK')
-			except:
-				if sys.argv[2] is '-detail':
-					print(' ... fail')
+						print(' ... fail')
 
 	print('\r\n')
 	get_elapsed_time(start_time, datetime.now(), False)
