@@ -2,6 +2,7 @@
 from time import sleep
 from datetime import datetime
 import os
+import sys
 
 import oss2
 
@@ -49,6 +50,10 @@ bucket_name_prefix = 'momatech-image-gallery/FunMovie/pictures/'
 local_path_prefix = 'D:\VirtualDir\FunMovie\pictures\\'
 folders = ['advertisement','banners','banners_intouch','famous','files','homepicture','posters','topic','videotype']
 
+if len(sys.argv) < 2:
+	print('Please select an optaion in argv2 !\r\nExit.')
+	sys.exit()
+
 for folder in folders:
 	#if folder is not 'advertisement' and folder is not 'homepicture':
 	#	continue
@@ -90,7 +95,8 @@ for folder in folders:
 	if len(list_diff) != 0:
 		for file in list_diff:
 			if file.endswith('.jpg') or file.endswith('.png'):
-				print('%d. %s' % (list_diff.index(file)+1, file))
+				if sys.argv[2] is '-detail':
+					print('%d. %s' % (list_diff.index(file)+1, file))
 			else:
 				list_diff.remove(file)
 	else:
@@ -99,14 +105,19 @@ for folder in folders:
 	### Sync/Upload file to OSS ###
 	print('\r\nReady to upload to OS:')
 
-	bucket_upload = open_bucket('momatech-image-gallery/FunMovie/pictures/'+folder)
+	if sys.argv[1] is '-sync':
+		bucket_upload = open_bucket('momatech-image-gallery/FunMovie/pictures/'+folder)
+	
 	for file in list_diff:
-		full_path = path + file
-		print(('%d. %s') % (list_diff.index(file)+1, full_path), end='', flush=True)
+		if sys.argv[2] is '-detail':
+			print(('%d. %s') % (list_diff.index(file)+1, path+file), end='', flush=True)
+		
 		try:
 			with open(full_path, 'rb') as fileobj:
-				#print(('%d. %s') % (list_diff.index(file)+1, fileobj.name), end='', flush=True)
-				#bucket_upload.put_object(file, fileobj);
+				if sys.argv[1] is '-sync':
+					bucket_upload.put_object(file, fileobj);
+				else:
+					pass
 				fileobj.close()
 				print(' ... OK')
 		except:
