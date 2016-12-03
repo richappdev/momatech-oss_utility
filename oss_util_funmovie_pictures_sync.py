@@ -104,7 +104,7 @@ for folder in folders:
 	### Sync/Upload file to OSS ###
 	if len(list_diff) > 0:
 		print('\r\nReady to upload to OS:')
-		
+
 		try:
 			bucket_upload = open_bucket('momatech-image-gallery/FunMovie/pictures/'+folder)
 		except:
@@ -113,9 +113,9 @@ for folder in folders:
 		
 		for file in list_diff:
 			full_path = path + file
-			print(('%d. %s') % (list_diff.index(file)+1, full_path), end='', flush=True)
-
+			
 			try:
+				print(('%d. %s') % (list_diff.index(file)+1, full_path), end='', flush=True)
 				with open(full_path, 'rb') as fileobj:
 					#bucket_upload.put_object(file, fileobj);
 					fileobj.close()
