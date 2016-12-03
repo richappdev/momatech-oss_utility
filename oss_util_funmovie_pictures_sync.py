@@ -50,8 +50,8 @@ local_path_prefix = 'D:\VirtualDir\FunMovie\pictures\\'
 folders = ['advertisement','banners','banners_intouch','famous','files','homepicture','posters','topic','videotype']
 
 for folder in folders:
-	if folder is not 'advertisement' and folder is not 'homepicture':
-		continue
+	#if folder is not 'advertisement' and folder is not 'homepicture':
+	#	continue
 
 	bucket_name_str = bucket_name_prefix + folder
 	print(("\r\n>>>>>> %s") % bucket_name_str)
@@ -99,13 +99,14 @@ for folder in folders:
 	### Sync/Upload file to OSS ###
 	print('\r\nReady to upload to OS:')
 
+	bucket_upload = open_bucket('momatech-image-gallery/FunMovie/pictures/'+folder)
 	for file in list_diff:
 		full_path = path + file
 		print(('%d. %s') % (list_diff.index(file)+1, full_path), end='', flush=True)
 		try:
 			with open(full_path, 'rb') as fileobj:
 				#print(('%d. %s') % (list_diff.index(file)+1, fileobj.name), end='', flush=True)
-				#bucket.put_object(file, fileobj);
+				#bucket_upload.put_object(file, fileobj);
 				fileobj.close()
 				print(' ... OK')
 		except:
