@@ -113,11 +113,11 @@ for folder in folders:
 		
 		for file in list_diff:
 			full_path = path + file
-			
+
 			try:
 				print(('%d. %s') % (list_diff.index(file)+1, full_path), end='', flush=True)
 				with open(full_path, 'rb') as fileobj:
-					#bucket_upload.put_object(file, fileobj);
+					bucket_upload.put_object(file, fileobj);
 					fileobj.close()
 					print(' ... OK')
 			except:
