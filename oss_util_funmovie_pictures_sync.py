@@ -106,9 +106,11 @@ for folder in folders:
 		bucket_upload = open_bucket('momatech-image-gallery/FunMovie/pictures/'+folder)
 		
 		for file in list_diff:
+			full_path = path + file
+			print(('%d. %s') % (list_diff.index(file)+1, full_path), end='', flush=True)
+
 			try:
 				with open(full_path, 'rb') as fileobj:
-					print(('%d. %s') % (list_diff.index(file)+1, fileobj.name), end='', flush=True)
 					#bucket_upload.put_object(file, fileobj);
 					fileobj.close()
 					print(' ... OK')
