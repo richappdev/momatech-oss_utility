@@ -98,7 +98,7 @@ for folder in folders:
 		for file in list_diff:
 			if file.endswith('.jpg') or file.endswith('.png'):
 				if sys.argv[2] == '-detail':
-					print('%d. %s' % (list_diff.index(file)+1, unicode(file).encode("utf-8")))
+					print('%d. %s' % (list_diff.index(file)+1, file))
 			else:
 				list_diff.remove(file)
 	else:
@@ -112,7 +112,7 @@ for folder in folders:
 		
 		for file in list_diff:
 			if sys.argv[2] == '-detail':
-				print(('%d. %s') % (list_diff.index(file)+1, path+unicode(file).encode("utf-8")), end='', flush=True)
+				print(('%d. %s') % (list_diff.index(file)+1, path+file), end='', flush=True)
 			
 			if sys.argv[1] == '-sync':
 				try:
