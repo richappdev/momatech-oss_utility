@@ -50,8 +50,10 @@ bucket_name_prefix = 'momatech-image-gallery/FunMovie/pictures/'
 local_path_prefix = 'D:\VirtualDir\FunMovie\pictures\\'
 folders = ['advertisement','banners','banners_intouch','famous','files','homepicture','posters','topic','videotype']
 
-if len(sys.argv) < 2:
-	print('Please select an optaion in argv2 !\r\nExit.')
+if len(sys.argv) < 3:
+	print('arg[1]: -list, -sync')
+	print('arg[2]: -detail, -empty')
+	print('Please input with two arguments !\r\nExit.')
 	sys.exit()
 
 for folder in folders:
@@ -104,7 +106,8 @@ for folder in folders:
 
 	### Sync/Upload file to OSS ###
 	if len(list_diff) > 0:
-		print('\r\nReady to upload to OS:')
+		if sys.argv[1] is '-sync':
+			print('\r\nReady to upload to OS:')
 
 		if sys.argv[1] is '-sync':
 			bucket_upload = open_bucket('momatech-image-gallery/FunMovie/pictures/'+folder)
@@ -120,9 +123,12 @@ for folder in folders:
 					else:
 						pass
 					fileobj.close()
-					print(' ... OK')
+
+					if sys.argv[2] is '-detail':
+						print(' ... OK')
 			except:
-				print(' ... fail')
+				if sys.argv[2] is '-detail':
+					print(' ... fail')
 
 	print('\r\n')
 	get_elapsed_time(start_time, datetime.now(), False)
