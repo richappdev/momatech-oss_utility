@@ -92,7 +92,8 @@ for folder in folders:
 		for file in list_diff:
 			if file.endswith('.jpg') or file.endswith('.png'):
 				try:
-					print('%d. %s' % (list_diff.index(file)+1, file))
+					pass
+					#print('%d. %s' % (list_diff.index(file)+1, file))
 				except:	
 					pass
 			else:
@@ -103,7 +104,12 @@ for folder in folders:
 	### Sync/Upload file to OSS ###
 	if len(list_diff) > 0:
 		print('\r\nReady to upload to OS:')
-		bucket_upload = open_bucket('momatech-image-gallery/FunMovie/pictures/'+folder)
+		
+		try:
+			bucket_upload = open_bucket('momatech-image-gallery/FunMovie/pictures/'+folder)
+		except:
+			print('Open bucket_upload fail ...')
+			break
 		
 		for file in list_diff:
 			full_path = path + file
