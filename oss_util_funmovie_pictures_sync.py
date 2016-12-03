@@ -97,32 +97,32 @@ for folder in folders:
 	if len(list_diff) > 0:
 		for file in list_diff:
 			if file.endswith('.jpg') or file.endswith('.png'):
-				if sys.argv[2] is '-detail':
+				if sys.argv[2] == '-detail':
 					print('%d. %s' % (list_diff.index(file)+1, unicode(file).encode("utf-8")))
 			else:
 				list_diff.remove(file)
 	else:
-		print('Folder is SYNC')
+		print('Folder is already synced')
 
 	### Sync/Upload file to OSS ###
 	if len(list_diff) > 0:
-		if sys.argv[1] is '-sync':
+		if sys.argv[1] == '-sync':
 			print('\r\nReady to upload to OS:')
 			bucket_upload = open_bucket('momatech-image-gallery/FunMovie/pictures/'+folder)
 		
 		for file in list_diff:
-			if sys.argv[2] is '-detail':
+			if sys.argv[2] == '-detail':
 				print(('%d. %s') % (list_diff.index(file)+1, path+unicode(file).encode("utf-8")), end='', flush=True)
 			
-			if sys.argv[1] is '-sync':
+			if sys.argv[1] == '-sync':
 				try:
 					with open(full_path, 'rb') as fileobj:
 						bucket_upload.put_object(file, fileobj);
 						fileobj.close()
-						if sys.argv[2] is '-detail':
+						if sys.argv[2] == '-detail':
 							print(' ... OK')
 				except e:
-					if sys.argv[2] is '-detail':
+					if sys.argv[2] == '-detail':
 						print(' ... fail')
 
 	print('\r\n')
