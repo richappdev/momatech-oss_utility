@@ -97,8 +97,10 @@ for folder in folders:
 	if len(list_diff) > 0:
 		for file in list_diff:
 			if file.endswith('.jpg') or file.endswith('.png'):
-				if sys.argv[2] == '-detail':
+				try:
 					print('%d. %s' % (list_diff.index(file)+1, file))
+				except:	
+					pass
 			else:
 				list_diff.remove(file)
 	else:
@@ -106,24 +108,18 @@ for folder in folders:
 
 	### Sync/Upload file to OSS ###
 	if len(list_diff) > 0:
-		if sys.argv[1] == '-sync':
-			print('\r\nReady to upload to OS:')
-			bucket_upload = open_bucket('momatech-image-gallery/FunMovie/pictures/'+folder)
+		print('\r\nReady to upload to OS:')
+		bucket_upload = open_bucket('momatech-image-gallery/FunMovie/pictures/'+folder)
 		
 		for file in list_diff:
-			if sys.argv[2] == '-detail':
-				print(('%d. %s') % (list_diff.index(file)+1, path+file), end='', flush=True)
-			
-			if sys.argv[1] == '-sync':
-				try:
-					with open(full_path, 'rb') as fileobj:
-						bucket_upload.put_object(file, fileobj);
-						fileobj.close()
-						if sys.argv[2] == '-detail':
-							print(' ... OK')
-				except e:
-					if sys.argv[2] == '-detail':
-						print(' ... fail')
+			try:
+				with open(full_path, 'rb') as fileobj:
+					print(('%d. %s') % (list_diff.index(file)+1, fileobj.name), end='', flush=True)
+					#bucket_upload.put_object(file, fileobj);
+					fileobj.close()
+					print(' ... OK')
+			except:
+				print(' ... fail')
 
 	print('\r\n')
 	get_elapsed_time(start_time, datetime.now(), False)
