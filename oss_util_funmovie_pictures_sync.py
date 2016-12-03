@@ -97,8 +97,8 @@ for folder in folders:
 	if len(list_diff) > 0:
 		for file in list_diff:
 			if file.endswith('.jpg') or file.endswith('.png'):
-				if sys.argv[2] is '-detail':
-					print('%d. %s' % (list_diff.index(file)+1, unicode(file).encode("utf-8")))
+				#if sys.argv[2] is '-detail':
+				print('%d. %s' % (list_diff.index(file)+1, unicode(file).encode("utf-8")))
 			else:
 				list_diff.remove(file)
 	else:
