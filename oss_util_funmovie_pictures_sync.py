@@ -108,8 +108,6 @@ for folder in folders:
 	if len(list_diff) > 0:
 		if sys.argv[1] is '-sync':
 			print('\r\nReady to upload to OS:')
-
-		if sys.argv[1] is '-sync':
 			bucket_upload = open_bucket('momatech-image-gallery/FunMovie/pictures/'+folder)
 		
 		for file in list_diff:
