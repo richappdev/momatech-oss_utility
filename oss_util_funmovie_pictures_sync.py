@@ -65,7 +65,7 @@ local_path_prefix = 'D:\VirtualDir\FunMovie\pictures\\'
 folders = ['advertisement','banners','banners_intouch','famous','files','homepicture','posters','topic','videotype']
 
 for i, folder in enumerate(folders):
-	
+
 	bucket_name_str = bucket_name_prefix + folder
 	print(("\r\n>>>>>> %s") % bucket_name_str)
 
@@ -79,8 +79,7 @@ for i, folder in enumerate(folders):
 			pass
 		else:
 			files_local.remove(file)
-	print('Local IMAGE files count: %d' % len(files_local))		
-	#print(files_local)
+	print('Local IMAGE files count: %d' % len(files_local))
 
 	### GEt OSS files list ###
 	try:
@@ -107,9 +106,15 @@ for i, folder in enumerate(folders):
 	else:
 		print('Folder is already synced')
 
+	### Check UPDATED files by Last_Modified time ###
+	### 規則：本機檔案的mtime 只要大於 OSS檔案的mtime, 則加入list_diff當中，準備上傳
+	for j, time in enumerate(mtime_local):
+		if time > mtime_oss[j]:
+			list_diff.append(files_local[j])
+
 	### Sync/Upload file to OSS ###
 	if len(list_diff) > 0:
-		print('\r\nReady to upload to OS:')
+		print('\r\nReady to upload/update files to OS:')
 
 		try:
 			bucket_upload = open_bucket('momatech-image-gallery/FunMovie/pictures/'+folder)
