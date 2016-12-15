@@ -51,9 +51,6 @@ local_path_prefix = 'D:\VirtualDir\FunMovie\pictures\\'
 folders = ['advertisement','banners','banners_intouch','famous','files','homepicture','posters','topic','videotype']
 
 for folder in folders:
-	#if folder is not 'advertisement' and folder is not 'homepicture':
-	#	continue
-
 	bucket_name_str = bucket_name_prefix + folder
 	print(("\r\n>>>>>> %s") % bucket_name_str)
 
