@@ -10,21 +10,20 @@ import oss2
 def get_local_file_list(path):
 	mtime_list = []
 	file_list = next(os.walk(path))[2]
-	
 	for file in file_list:
-		#print(datetime.fromtimestamp(os.path.getmtime(path+file)))
 		mtime_list.append(os.path.getmtime(path+file))
 	return list(file_list), mtime_list
 
 def get_oss_file_list(bucket):
 	prefix = 'FunMovie/pictures/' + folder + '/'
-	obj_oss = []
+	mtime_list = []
+	file_list = []
 
 	for obj in oss2.ObjectIterator(bucket, prefix):
 			if obj.key.endswith('.jpg') or obj.key.endswith('.png'):
-				obj_oss.append( [(obj.key.split('/'))[len(obj.key.split('/'))-1] , int(obj.last_modified)])	#remove prefix and get only file name
-
-	return obj_oss
+				file_list.append((obj.key.split('/'))[len(obj.key.split('/'))-1])	#remove prefix and get only file name
+				mtime_list.append(int(obj.last_modified))
+	return file_list, mtime_list
 
 def get_elapsed_time(start, end, show_detail):
 	elapsed_time = end - start
@@ -74,8 +73,8 @@ for folder in folders:
 	### Get OSS files list ###
 	try:
 		bucket = open_bucket('momatech-image-gallery')
-		obj_oss = get_oss_file_list(bucket)
-		print('OSS IMAGE files count: %d' % len(obj_oss))
+		files_oss, mtime_oss = get_oss_file_list(bucket)
+		print('OSS IMAGE files count: %d' % len(files_oss))
 	except:
 		print('Open bucket fail ...')
 		break
