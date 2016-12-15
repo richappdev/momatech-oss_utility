@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
-import time
+from time import sleep
+from datetime import datetime
 import os
+import sys
+
 import oss2
 
 def get_file_list(path):
