@@ -6,9 +6,11 @@ import sys
 
 import oss2
 
-def get_file_list(path):
+def get_local_file_list(path):
 	file_list = next(os.walk(path))[2]
-	return list(file_list)
+	for file in file_list:
+		mtime_list.append(os.path.getmtime(path+file))
+	return list(file_list), mtime_list
 
 def get_elapsed_time(start, end, show_detail):
 	elapsed_time = end - start
@@ -58,14 +60,14 @@ for folder in folders:
 
 	### Get local files list ###
 	path = local_path_prefix + folder + '\\'
-	list_files = get_file_list(path)
-	for file in list_files:
+	files_local, mtime_local = get_file_list(path)
+	for file in files_local:
 		if file.endswith('.jpg') or file.endswith('.png'):
 			pass
 		else:
-			list_files.remove(file)
-	print('Local IMAGE files count: %d' % len(list_files))		
-	#print(list_files)
+			files_local.remove(file)
+	print('Local IMAGE files count: %d' % len(files_local))		
+	#print(files_local)
 
 	### GEt OSS files list ###
 	try:
@@ -83,7 +85,7 @@ for folder in folders:
 		break
 
 	### Compare two lists ###
-	list_diff = list(set(list_files)^set(list_obj))
+	list_diff = list(set(files_local)^set(list_obj))
 	print('Difference IMAGE count: %d' % len(list_diff))
 	if len(list_diff) > 0:
 		for file in list_diff:
