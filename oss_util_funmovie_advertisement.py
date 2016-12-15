@@ -88,7 +88,8 @@ for folder in folders:
 			try:
 				with open(full_path, 'rb') as fileobj:
 					print(('%d. %s %s')%(i+1, datetime.fromtimestamp(mtime_local[i]), full_path))
-					bucket.put_object(file, fileobj);
+					bucket_upload = open_bucket('momatech-image-gallery/FunMovie/pictures/'+folder)
+					bucket_upload.put_object(file, fileobj);
 					pass
 				fileobj.close()
 			except:
