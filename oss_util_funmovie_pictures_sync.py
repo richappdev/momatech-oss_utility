@@ -7,6 +7,7 @@ import sys
 import oss2
 
 def get_local_file_list(path):
+	mtime_list = []
 	file_list = next(os.walk(path))[2]
 	for file in file_list:
 		mtime_list.append(os.path.getmtime(path+file))
@@ -71,7 +72,7 @@ for folder in folders:
 
 	### Get local files list ###
 	path = local_path_prefix + folder + '\\'
-	files_local, mtime_local = get_file_list(path)
+	files_local, mtime_local = get_local_file_list(path)
 	for file in files_local:
 		if file.endswith('.jpg') or file.endswith('.png'):
 			pass
