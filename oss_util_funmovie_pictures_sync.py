@@ -64,7 +64,8 @@ bucket_name_prefix = 'momatech-image-gallery/FunMovie/pictures/'
 local_path_prefix = 'D:\VirtualDir\FunMovie\pictures\\'
 folders = ['advertisement','banners','banners_intouch','famous','files','homepicture','posters','topic','videotype']
 
-for folder in folders:
+for i, folder in enumerate(folders):
+	
 	bucket_name_str = bucket_name_prefix + folder
 	print(("\r\n>>>>>> %s") % bucket_name_str)
 
