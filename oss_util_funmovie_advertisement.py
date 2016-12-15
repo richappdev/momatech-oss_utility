@@ -8,14 +8,13 @@ import json
 import oss2
 
 def get_local_file_list(path):
-	return_list = []
+	mtime_list = []
 	file_list = next(os.walk(path))[2]
 	
 	for file in file_list:
 		#print(datetime.fromtimestamp(os.path.getmtime(path+file)))
-		return_list.append([file, os.path.getmtime(path+file)])
-
-	return list(return_list)
+		mtime_list.append(os.path.getmtime(path+file))
+	return list(file_list), mtime_list
 
 def get_oss_file_list(bucket):
 	prefix = 'FunMovie/pictures/' + folder + '/'
@@ -72,7 +71,7 @@ for folder in folders:
 
 	start_time = datetime.now()
 
-	### GEt OSS files list ###
+	### Get OSS files list ###
 	try:
 		bucket = open_bucket('momatech-image-gallery')
 		obj_oss = get_oss_file_list(bucket)
@@ -81,18 +80,17 @@ for folder in folders:
 		print('Open bucket fail ...')
 		break
 
-	count=0
+	#Get local files list ###
 	path = 'D:\VirtualDir\FunMovie\pictures\\' + folder + '\\'
-	obj_local = get_local_file_list(path)
-	for obj in obj_local:
-		if ".py" not in obj[0]:
-			full_path = path + obj[0]
+	files_local, mtime_local = get_local_file_list(path)
+	for i, file in enumerate(files_local):
+		if ".py" not in file:
+			full_path = path + file
 			try:
 				with open(full_path, 'rb') as fileobj:
-					print(('%d. %s %s') % (count+1, full_path, datetime.fromtimestamp(obj[1])))
-					bucket.put_object(obj[0], fileobj);
+					print(('%d. %s %s')%(i+1, datetime.fromtimestamp(mtime_local[i]), full_path))
+					bucket.put_object(file, fileobj);
 					pass
-				count += 1
 				fileobj.close()
 			except:
 				pass
