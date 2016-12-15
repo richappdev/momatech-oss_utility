@@ -12,6 +12,17 @@ def get_local_file_list(path):
 		mtime_list.append(os.path.getmtime(path+file))
 	return list(file_list), mtime_list
 
+def get_oss_file_list(bucket):
+	prefix = 'FunMovie/pictures/' + folder + '/'
+	mtime_list = []
+	file_list = []
+
+	for obj in oss2.ObjectIterator(bucket, prefix):
+			if obj.key.endswith('.jpg') or obj.key.endswith('.png'):
+				file_list.append((obj.key.split('/'))[len(obj.key.split('/'))-1])	#remove prefix and get only file name
+				mtime_list.append(int(obj.last_modified))
+	return file_list, mtime_list
+
 def get_elapsed_time(start, end, show_detail):
 	elapsed_time = end - start
 	if show_detail is True:
@@ -72,20 +83,14 @@ for folder in folders:
 	### GEt OSS files list ###
 	try:
 		bucket = open_bucket('momatech-image-gallery')
-
-		prefix = 'FunMovie/pictures/' + folder + '/'
-		list_obj = []
-		for obj in oss2.ObjectIterator(bucket, prefix):
-			if obj.key.endswith('.jpg') or obj.key.endswith('.png'):
-				list_obj.append((obj.key.split('/'))[len(obj.key.split('/'))-1])	#remove prefix and get only file name
-		print('OSS IMAGE files count: %d' % len(list_obj))
-		#print(list_obj)
+		files_oss, mtime_oss = get_oss_file_list(bucket)
+		print('OSS IMAGE files count: %d' % len(files_oss))
 	except:
 		print('Open bucket fail ...')
 		break
 
 	### Compare two lists ###
-	list_diff = list(set(files_local)^set(list_obj))
+	list_diff = list(set(files_local)^set(files_oss))
 	print('Difference IMAGE count: %d' % len(list_diff))
 	if len(list_diff) > 0:
 		for file in list_diff:
