@@ -3,12 +3,29 @@ from time import sleep
 from datetime import datetime
 import os
 import sys
+import json
 
 import oss2
 
-def get_file_list(path):
+def get_local_file_list(path):
+	return_list = []
 	file_list = next(os.walk(path))[2]
-	return list(file_list)
+	
+	for file in file_list:
+		#print(datetime.fromtimestamp(os.path.getmtime(path+file)))
+		return_list.append([file, os.path.getmtime(path+file)])
+
+	return list(return_list)
+
+def get_oss_file_list(bucket):
+	prefix = 'FunMovie/pictures/' + folder + '/'
+	obj_oss = []
+
+	for obj in oss2.ObjectIterator(bucket, prefix):
+			if obj.key.endswith('.jpg') or obj.key.endswith('.png'):
+				obj_oss.append( [(obj.key.split('/'))[len(obj.key.split('/'))-1] , int(obj.last_modified)])	#remove prefix and get only file name
+
+	return obj_oss
 
 def get_elapsed_time(start, end, show_detail):
 	elapsed_time = end - start
@@ -58,33 +75,27 @@ for folder in folders:
 	### GEt OSS files list ###
 	try:
 		bucket = open_bucket('momatech-image-gallery')
-
-		prefix = 'FunMovie/pictures/' + folder + '/'
-		list_obj = []
-		for obj in oss2.ObjectIterator(bucket, prefix):
-			if obj.key.endswith('.jpg') or obj.key.endswith('.png'):
-				list_obj.append((obj.key.split('/'))[len(obj.key.split('/'))-1])	#remove prefix and get only file name
-		print('OSS IMAGE files count: %d' % len(list_obj))
-		#print(list_obj)
+		obj_oss = get_oss_file_list(bucket)
+		print('OSS IMAGE files count: %d' % len(obj_oss))
 	except:
 		print('Open bucket fail ...')
 		break
 
 	count=0
 	path = 'D:\VirtualDir\FunMovie\pictures\\' + folder + '\\'
-	files = get_file_list(path)
-	for file in files:
-		if ".py" not in file:
-			full_path = path + file
+	obj_local = get_local_file_list(path)
+	for obj in obj_local:
+		if ".py" not in obj[0]:
+			full_path = path + obj[0]
 			try:
 				with open(full_path, 'rb') as fileobj:
-					print(('%d. %s') % (count, full_path))
-					bucket.put_object(file, fileobj);
+					print(('%d. %s %s') % (count+1, full_path, datetime.fromtimestamp(obj[1])))
+					bucket.put_object(obj[0], fileobj);
+					pass
 				count += 1
 				fileobj.close()
 			except:
 				pass
-	print(count)
 
 	#end-time
 	end_time = datetime.now()
