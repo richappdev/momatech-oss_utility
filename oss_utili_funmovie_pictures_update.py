@@ -79,13 +79,13 @@ for i, folder in enumerate(folders):
 
 	### Get local files list ###
 	path = local_path_prefix + folder + '\\'
-	files_local, mtime_local = get_local_file_list(path)
+	files_local, mtime_local = get_local_image_file_list(path)
 	print('Local IMAGE files count: %d' % len(files_local))
 
 	### GEt OSS files list ###
 	try:
 		bucket = open_bucket('momatech-image-gallery')
-		files_oss, mtime_oss = get_oss_file_list(bucket)
+		files_oss, mtime_oss = get_oss_image_file_list(bucket)
 		print('OSS IMAGE files count: %d' % len(files_oss))
 	except:
 		print('Open bucket fail ...')
