@@ -106,12 +106,6 @@ for i, folder in enumerate(folders):
 	else:
 		print('Folder is already synced')
 
-	### Check UPDATED files by Last_Modified time ###
-	### 規則：本機檔案的mtime 只要大於 OSS檔案的mtime, 則加入list_diff當中，準備上傳
-	for j, time in enumerate(mtime_local):
-		if time > mtime_oss[j]:
-			list_diff.append(files_local[j])
-
 	### Sync/Upload file to OSS ###
 	if len(list_diff) > 0:
 		print('\r\nReady to upload/update files to OS:')
