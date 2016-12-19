@@ -1,3 +1,5 @@
+### oss_util_funmovie_advertisement ###
+
 # -*- coding: utf-8 -*-
 from time import sleep
 from datetime import datetime
@@ -13,6 +15,7 @@ def get_local_file_list(path):
 	for file in file_list:
 		mtime_list.append(os.path.getmtime(path+file))
 	return list(file_list), mtime_list
+<<<<<<< HEAD
 
 def get_oss_file_list(bucket):
 	prefix = 'FunMovie/pictures/' + folder + '/'
@@ -51,6 +54,46 @@ def open_bucket(bucket_name_str):
 		service = oss2.Service(oss2.Auth(access_key_id, access_key_secret), endpoint, connect_timeout=10)
 		#print('\n'.join(info.name for info in oss2.BucketIterator(service)))
 
+=======
+
+def get_oss_file_list(bucket):
+	prefix = 'FunMovie/pictures/' + folder + '/'
+	mtime_list = []
+	file_list = []
+
+	for obj in oss2.ObjectIterator(bucket, prefix):
+			if obj.key.endswith('.jpg') or obj.key.endswith('.png'):
+				file_list.append((obj.key.split('/'))[len(obj.key.split('/'))-1])	#remove prefix and get only file name
+				mtime_list.append(int(obj.last_modified))
+	return file_list, mtime_list
+
+def get_elapsed_time(start, end, show_detail):
+	elapsed_time = end - start
+	if show_detail is True:
+		print("Start Time\t%s" % start)
+		print("End Time\t%s" % end)
+	print("Elapsed Time\t%s" % elapsed_time)
+
+def open_bucket(bucket_name_str):
+	try:
+		# 首先初始化AccessKeyId、AccessKeySecret、Endpoint等信息。
+		# 通过环境变量获取，或者把诸如“<你的AccessKeyId>”替换成真实的AccessKeyId等。
+		access_key_id = os.getenv('OSS_TEST_ACCESS_KEY_ID', 'OOepyKdFufHSV01J')
+		access_key_secret = os.getenv('OSS_TEST_ACCESS_KEY_SECRET', 'Tpp4rc2DVWhyah4GNZwri7oFGKpBHu')
+		bucket_name = os.getenv('OSS_TEST_BUCKET', bucket_name_str)
+		endpoint = os.getenv('OSS_TEST_ENDPOINT', 'oss-cn-hangzhou.aliyuncs.com')
+
+		# 确认上面的参数都填写正确了
+		for param in (access_key_id, access_key_secret, bucket_name, endpoint):
+			assert '<' not in param, '请设置参数：' + param
+
+		# 列举所有的Bucket
+		#   1. 先创建一个Service对象
+		#   2. 用oss2.BucketIterator遍历
+		service = oss2.Service(oss2.Auth(access_key_id, access_key_secret), endpoint, connect_timeout=10)
+		#print('\n'.join(info.name for info in oss2.BucketIterator(service)))
+
+>>>>>>> 5790ec94a9a66eb2d3d902924d0807c33859ecc8
 		# 创建Bucket对象，所有Object相关的接口都可以通过Bucket对象来进行
 		bucket = oss2.Bucket(oss2.Auth(access_key_id, access_key_secret), endpoint, bucket_name)
 
