@@ -96,6 +96,7 @@ for i, folder in enumerate(folders):
 	print('Difference IMAGE count: %d' % len(list_diff))
 	if len(list_diff) > 0:
 		#print('%d. %s' % (list_diff.index(file)+1, file))
+		pass
 	else:
 		print('Folder is already synced')
 
